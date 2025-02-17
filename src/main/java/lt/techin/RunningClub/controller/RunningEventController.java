@@ -22,9 +22,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class RunningEventController {
-    RunningEventService runningEventService;
-    UserService userService;
-    RegistrationService registrationService;
+    private final RunningEventService runningEventService;
+    private final UserService userService;
+    private final RegistrationService registrationService;
 
     @Autowired
     public RunningEventController(RunningEventService runningEventService, UserService userService, RegistrationService registrationService) {
@@ -78,7 +78,7 @@ public class RunningEventController {
     }
 
     @PostMapping("/events/{eventId}/register")
-    public ResponseEntity<?> registerForEvent(@PathVariable long eventId, @RequestBody RegistrationRequestDTO registrationRequestDTO) {
+    public ResponseEntity<?> registerForEvent(@PathVariable long eventId, @Valid @RequestBody RegistrationRequestDTO registrationRequestDTO) {
         Optional<RunningEvent> eventOptional = runningEventService.findEventById(eventId);
         Optional<User> userOptional = userService.findUserById(registrationRequestDTO.user().getId());
         if (eventOptional.isEmpty()) {
