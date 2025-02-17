@@ -4,7 +4,6 @@ import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-//todo validation does not work
 public record RunningEventRequestDTO(
     @NotBlank
     @Size(min = 5, max = 255, message = "must be between 5 and 255 characters")

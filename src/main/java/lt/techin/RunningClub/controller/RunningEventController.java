@@ -1,5 +1,6 @@
 package lt.techin.RunningClub.controller;
 
+import jakarta.validation.Valid;
 import lt.techin.RunningClub.dto.*;
 import lt.techin.RunningClub.model.Registration;
 import lt.techin.RunningClub.model.RunningEvent;
@@ -47,7 +48,7 @@ public class RunningEventController {
     }
 
     @PostMapping("/events")
-    public ResponseEntity<RunningEventResponseDTO> createEvent(@RequestBody RunningEventRequestDTO runningEventRequestDTO) {
+    public ResponseEntity<RunningEventResponseDTO> createEvent(@Valid @RequestBody RunningEventRequestDTO runningEventRequestDTO) {
         RunningEvent runningEvent = RunningEventMapper.toRunningEvent(runningEventRequestDTO);
         RunningEventResponseDTO savedEvent = RunningEventMapper.toRunningEventResponseDTO(runningEventService.saveEvent(runningEvent));
         return ResponseEntity.ok(savedEvent);

@@ -1,5 +1,6 @@
 package lt.techin.RunningClub.controller;
 
+import jakarta.validation.Valid;
 import lt.techin.RunningClub.dto.UserMapper;
 import lt.techin.RunningClub.dto.UserRequestDTO;
 import lt.techin.RunningClub.dto.UserResponseDTO;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         if (userService.isUsernameUnique(userRequestDTO.username())) {
             return ResponseEntity.badRequest().build();//todo add msg that not unique
         }
