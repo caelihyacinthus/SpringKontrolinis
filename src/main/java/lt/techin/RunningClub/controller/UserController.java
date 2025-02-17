@@ -40,7 +40,7 @@ public class UserController {
 
         return ResponseEntity.created(
                 ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("")
+                    .path("/{id}")
                     .buildAndExpand(savedUser.id())
                     .toUri())
             .body(savedUser);

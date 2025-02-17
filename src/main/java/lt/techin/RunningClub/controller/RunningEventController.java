@@ -11,6 +11,7 @@ import lt.techin.RunningClub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,7 +52,14 @@ public class RunningEventController {
     public ResponseEntity<RunningEventResponseDTO> createEvent(@Valid @RequestBody RunningEventRequestDTO runningEventRequestDTO) {
         RunningEvent runningEvent = RunningEventMapper.toRunningEvent(runningEventRequestDTO);
         RunningEventResponseDTO savedEvent = RunningEventMapper.toRunningEventResponseDTO(runningEventService.saveEvent(runningEvent));
-        return ResponseEntity.ok(savedEvent);
+
+
+        return ResponseEntity.created(
+                ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("{id}")
+                    .buildAndExpand(savedEvent.id())
+                    .toUri())
+            .body(savedEvent);
     }
 
     @DeleteMapping("/events/{id}")
@@ -91,6 +99,11 @@ public class RunningEventController {
 
         RegistrationResponseDTO savedRegistration = RegistrationMapper.toRegistrationResponseDTO(registrationService.saveRegistration(registration));
 
-        return ResponseEntity.ok(savedRegistration);
+        return ResponseEntity.created(
+                ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(savedRegistration.id())
+                    .toUri())
+            .body(savedRegistration);
     }
 }
