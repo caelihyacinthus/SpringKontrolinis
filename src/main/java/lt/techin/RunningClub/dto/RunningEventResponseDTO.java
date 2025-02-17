@@ -1,7 +1,5 @@
 package lt.techin.RunningClub.dto;
 
-import jakarta.validation.constraints.*;
-
 import java.time.LocalDate;
 
 public record RunningEventResponseDTO(

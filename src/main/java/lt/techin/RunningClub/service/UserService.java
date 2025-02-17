@@ -1,7 +1,5 @@
 package lt.techin.RunningClub.service;
 
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lt.techin.RunningClub.model.User;
 import lt.techin.RunningClub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
