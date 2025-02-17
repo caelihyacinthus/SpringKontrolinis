@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -37,14 +39,16 @@ public class RunningEventController {
     }
 
     @GetMapping("/events/{id}/participants")
-    public ResponseEntity<List<UserEventResponseDTO>> getEventById(@PathVariable long id) {
+    public ResponseEntity<?> getEventById(@PathVariable long id) {
         if (runningEventService.existsEventById(id)) {
             List<Registration> registration = runningEventService.findEventById(id).get().getRegistrations();
             List<UserEventResponseDTO> usersDTO = registration.stream().map(Registration::getUser).map(UserMapper::toUserEventResponseDTO).toList();
             return ResponseEntity.ok(usersDTO);
 
         } else {
-            return ResponseEntity.badRequest().build();
+            Map<String, String> badResponse = new HashMap<>();
+            badResponse.put("event", "event does not exists");
+            return ResponseEntity.badRequest().body(badResponse);
         }
     }
 
@@ -80,7 +84,9 @@ public class RunningEventController {
         if (eventOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else if (userOptional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            Map<String, String> badResponse = new HashMap<>();
+            badResponse.put("user", "user does not exists");
+            return ResponseEntity.badRequest().body(badResponse);
         }
         RunningEvent runningEvent = eventOptional.get();
         User user = userOptional.get();
@@ -88,7 +94,9 @@ public class RunningEventController {
         List<Registration> userReg = user.getRegistrations();
         for (Registration r : userReg) {
             if (r.getRunningEvent() == runningEvent) {
-                return ResponseEntity.badRequest().build();
+                Map<String, String> badResponse = new HashMap<>();
+                badResponse.put("user", "user already registered");
+                return ResponseEntity.badRequest().body(badResponse);
             }
         }
 

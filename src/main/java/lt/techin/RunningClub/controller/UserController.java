@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -28,9 +31,11 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<?> register(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         if (userService.isUsernameUnique(userRequestDTO.username())) {
-            return ResponseEntity.badRequest().build();//todo add msg that not unique
+            Map<String, String> badResponse = new HashMap<>();
+            badResponse.put("username", "username already in use");
+            return ResponseEntity.badRequest().body(badResponse);
         }
 
         User user = UserMapper.toUser(userRequestDTO);
