@@ -8,19 +8,23 @@ import lt.techin.RunningClub.model.User;
 import lt.techin.RunningClub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
-    UserService userService;
+    private UserService userService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/auth/register")
@@ -30,10 +34,15 @@ public class UserController {
         }
 
         User user = UserMapper.toUser(userRequestDTO);
-        //todo user set psw to encoded
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         UserResponseDTO savedUser = UserMapper.toUserResponseDTO(userService.saveUser(user));
 
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.created(
+                ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("")
+                    .buildAndExpand(savedUser.id())
+                    .toUri())
+            .body(savedUser);
     }
 }
