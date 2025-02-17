@@ -17,13 +17,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.POST, "/api/events").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/events/{id}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/events/{id}/participants").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/events").hasRole("USER")
-                .requestMatchers(HttpMethod.POST, "/api/events/{id}/register").hasRole("USER")
-//                .requestMatchers(HttpMethod.POST, "/api/events/{id}/register/")
-//                .access(new WebExpressionAuthorizationManager("#name = authentication.name"))
-                .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/events/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/events/*/participants")
+                .hasRole("ADMIN").requestMatchers(HttpMethod.GET, "/api/events")
+                .hasRole("USER").requestMatchers(HttpMethod.POST, "/api/events/*/register")
+                .hasRole("USER").requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                 .anyRequest().authenticated())
             .csrf(c -> c.disable())
             .httpBasic(Customizer.withDefaults());
