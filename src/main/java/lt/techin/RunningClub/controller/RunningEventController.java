@@ -34,6 +34,18 @@ public class RunningEventController {
         return ResponseEntity.ok(RunningEventMapper.toRunningEventResposeDTOList(runningEventService.findAllEvents()));
     }
 
+    @GetMapping("/events/{id}/participants")
+    public ResponseEntity<List<UserEventResponseDTO>> getEventById(@PathVariable long id) {
+        if (runningEventService.existsEventById(id)) {
+            List<Registration> registration = runningEventService.findEventById(id).get().getRegistrations();
+            List<UserEventResponseDTO> usersDTO = registration.stream().map(Registration::getUser).map(UserMapper::toUserEventResponseDTO).toList();
+            return ResponseEntity.ok(usersDTO);
+
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping("/events")
     public ResponseEntity<RunningEventResponseDTO> createEvent(@RequestBody RunningEventRequestDTO runningEventRequestDTO) {
         RunningEvent runningEvent = RunningEventMapper.toRunningEvent(runningEventRequestDTO);

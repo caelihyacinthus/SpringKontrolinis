@@ -73,4 +73,12 @@ public class RunningEvent {
     public void setMaxParticipants(int maxParticipants) {
         this.maxParticipants = maxParticipants;
     }
+
+    public List<Registration> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<Registration> registrations) {
+        this.registrations = registrations;
+    }
 }
