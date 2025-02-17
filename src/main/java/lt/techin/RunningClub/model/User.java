@@ -26,6 +26,14 @@ public class User /*implements UserDetails*/ {
     @JoinColumn(name = "user_id")
     private List<Registration> registrations;
 
+    public List<Registration> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<Registration> registrations) {
+        this.registrations = registrations;
+    }
+
     public User() {
     }
 

@@ -19,6 +19,9 @@ public class RunningEvent {
     @JoinColumn(name = "running_event_id")
     private List<Registration> registrations;
 
+    public RunningEvent() {
+    }
+
     public RunningEvent(String name, LocalDate calendarDate, String location, int maxParticipants, List<Registration> registrations) {
         this.name = name;
         this.calendarDate = calendarDate;

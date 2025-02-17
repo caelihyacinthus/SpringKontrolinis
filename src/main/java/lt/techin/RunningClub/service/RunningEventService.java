@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RunningEventService {
@@ -22,5 +23,17 @@ public class RunningEventService {
 
     public RunningEvent saveEvent(RunningEvent runningEvent) {
         return runningEventRepository.save(runningEvent);
+    }
+
+    public boolean existsEventById(long id) {
+        return runningEventRepository.existsById(id);
+    }
+
+    public void deleteEvent(RunningEvent event) {
+        runningEventRepository.delete(event);
+    }
+
+    public Optional<RunningEvent> findEventById(long id) {
+        return runningEventRepository.findById(id);
     }
 }
