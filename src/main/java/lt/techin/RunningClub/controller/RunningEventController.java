@@ -3,6 +3,7 @@ package lt.techin.RunningClub.controller;
 import lt.techin.RunningClub.dto.RunningEventMapper;
 import lt.techin.RunningClub.dto.RunningEventRequestDTO;
 import lt.techin.RunningClub.dto.RunningEventResponseDTO;
+import lt.techin.RunningClub.model.RunningEvent;
 import lt.techin.RunningClub.service.RunningEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,4 +26,10 @@ public class RunningEventController {
         return ResponseEntity.ok(RunningEventMapper.toRunningEventResposeDTOList(runningEventService.findAllEvents()));
     }
 
+    @PostMapping("/events")
+    public ResponseEntity<RunningEventResponseDTO> createEvent(@RequestBody RunningEventRequestDTO runningEventRequestDTO) {
+        RunningEvent runningEvent = RunningEventMapper.toRunningEvent(runningEventRequestDTO);
+        RunningEventResponseDTO savedEvent = RunningEventMapper.toRunningEventResponseDTO(runningEventService.saveEvent(runningEvent));
+        return ResponseEntity.ok(savedEvent);
+    }
 }

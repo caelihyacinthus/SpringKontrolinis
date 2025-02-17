@@ -19,4 +19,8 @@ public class RunningEventService {
     public List<RunningEvent> findAllEvents() {
         return runningEventRepository.findAll();
     }
+
+    public RunningEvent saveEvent(RunningEvent runningEvent) {
+        return runningEventRepository.save(runningEvent);
+    }
 }
